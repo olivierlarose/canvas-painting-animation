@@ -17,10 +17,20 @@ export default class scene extends Component {
     mouseMove(e){
         if(!this.mount || !this.ctx) return;
 
+        const prevX = this.x;
+        const prevY = this.y;
+
         this.x = e.pageX - this.mount.offsetLeft;
         this.y = e.pageY - this.mount.offsetTop;
   
         this.drawCircle(this.x, this.y, 60);
+        
+        const lerp = (x, y, a) => x * (1 - a) + y * a;
+        for(let i = 0 ; i < 10 ; i++){
+            const targetX = lerp(prevX, this.x, 0.1 * i);
+            const targetY = lerp(prevY, this.y, 0.1 * i);
+            this.drawCircle(targetX, targetY, 60);
+        }
     }
 
     drawCircle(x, y, radius){
